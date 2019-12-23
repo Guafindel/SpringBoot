@@ -46,9 +46,7 @@ class PostsServiceTest {
 		assertThat(posts.getAuthor()).isEqualTo(dto.getAuthor());
 		assertThat(posts.getContent()).isEqualTo(dto.getContent());
 		assertThat(posts.getTitle()).isEqualTo(dto.getTitle());
-		
-		
-				
+					
 	}
 
 }

@@ -53,7 +53,7 @@ public class PostsRepositoryTest {
 	 **/
 	
 	@Test
-	public void BaseTimeEntity_regit() {
+	public void baseTimeEntity_regit() {
 		//given
 		LocalDateTime now = LocalDateTime.now();
 		postsRepository.save(Posts.builder()
@@ -70,5 +70,16 @@ public class PostsRepositoryTest {
 		assertTrue(posts.getModifiedDate().isAfter(now));
 		
 	}	
+	
+	/*
+	 * @Test public void findAllDesc_test() { //given LocalDateTime now =
+	 * LocalDateTime.now(); postsRepository.save(Posts.builder() .title("테스트 게시글")
+	 * .content("테스트 본문") .author("guifindel@gmail.com") .build()); //when
+	 * List<Posts> postsList = (List<Posts>) postsRepository.findAllDesc();
+	 * 
+	 * //then Posts posts = postsList.get(0);
+	 * assertTrue(posts.getCreatedDate().isAfter(now));
+	 * assertTrue(posts.getModifiedDate().isAfter(now)); }
+	 */
 
 }

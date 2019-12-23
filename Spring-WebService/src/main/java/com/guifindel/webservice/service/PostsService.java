@@ -1,9 +1,12 @@
 package com.guifindel.webservice.service;
 
-import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.guifindel.webservice.controller.PostsMainResponseDto;
 import com.guifindel.webservice.controller.PostsSaveRequestDto;
 import com.guifindel.webservice.domain.PostsRepository;
 
@@ -21,6 +24,24 @@ public class PostsService {
 	}
 	
 	/**
+	 * findAllDesc 메소드에 트랜잭션 어노테이션을 추가했다.
+	 * 어노테이션에 추가 옵	션(readOnly = true)를 주면 트랜잭션 범위는 유지하되, 조회 기능만 남겨두어 조회속도가 개선된다. 
+	 * 이는 특별히 등록/수정/삭제 기능이 없는 메소드에선 사용이 추천된다.
+	 * 람다식이 일부 사용되었는데
+	 * .map(PostsMainResponseDto::new) 이 실제 의미하는 것은 .map(posts -> new PostsMainResponseDto(posts)) 이와 같으며
+	 * repository 결과로 넘어온 Posts의 Stream을 map을 통해 PostsMainResponseDto로 변환 -> List로 반환하는 메소드이다.
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public List<PostsMainResponseDto> findAllDesc() {
+		return postsRepository.findAllDesc() 
+			.map(PostsMainResponseDto::new)
+			.collect(Collectors.toList());
+		}
+	}
+	
+	
+	/**
 	 * 호출한 쪽에서 저장한 게시글의 id를 알 수 있도록 리턴 타입을 Long로 두고, .getId()를 반환값으로 지정한다.
 	 * Service 메소드는 Entity를 바로 받지 않고, 이전에 생성한 save용 DTO인 PostsSaveRequestDTO를 받아서 저장한다.
 	 * 
@@ -35,4 +56,4 @@ public class PostsService {
 	 * (좀 더 정확히 얘기한다면, 이미 넣은걸 롤배기키는 것이 아니며, 모든 처리가 정상적으로 됐을 대만 DB에 커밋하며 그렇지 않은 경우
 	 * 에는 커밋하지 않는 것이다.)
 	 */
-}
+
