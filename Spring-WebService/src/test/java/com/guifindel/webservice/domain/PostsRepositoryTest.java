@@ -2,6 +2,9 @@ package com.guifindel.webservice.domain;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.After;
 import org.junit.jupiter.api.Test;
@@ -49,6 +52,34 @@ public class PostsRepositoryTest {
 	 * 기본적으로 사용하기 때문이다. 테스트 코드를 실행하는 시점에 H2 DB를 실행시킨다. 테스트가 끝나면 H2 DB도 같이 종료된다.
 	 **/
 	
+	@Test
+	public void baseTimeEntity_regit() {
+		//given
+		LocalDateTime now = LocalDateTime.now();
+		postsRepository.save(Posts.builder()
+				.title("테스트 게시글")
+				.content("테스트 본문")
+				.author("guifindel@gmail.com")
+				.build());
+		//when
+		List<Posts> postsList = postsRepository.findAll();
+		
+		//then
+		Posts posts = postsList.get(0);
+		assertTrue(posts.getCreatedDate().isAfter(now));
+		assertTrue(posts.getModifiedDate().isAfter(now));
+		
+	}	
 	
+	/*
+	 * @Test public void findAllDesc_test() { //given LocalDateTime now =
+	 * LocalDateTime.now(); postsRepository.save(Posts.builder() .title("테스트 게시글")
+	 * .content("테스트 본문") .author("guifindel@gmail.com") .build()); //when
+	 * List<Posts> postsList = (List<Posts>) postsRepository.findAllDesc();
+	 * 
+	 * //then Posts posts = postsList.get(0);
+	 * assertTrue(posts.getCreatedDate().isAfter(now));
+	 * assertTrue(posts.getModifiedDate().isAfter(now)); }
+	 */
 
 }
